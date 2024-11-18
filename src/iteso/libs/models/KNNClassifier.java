@@ -14,35 +14,27 @@ public class KNNClassifier {
         MANHATTAN,
         MINKOWSKI
     }
-
-
     private int k;
     private DistanceType distanceType;
     private List<DataPoint> trainingData;
-
     public KNNClassifier(int k, DistanceType distanceType) {
         ErrorManager.validateK(k);  // Validación de k
         this.k = k;
         this.distanceType = distanceType;
         this.trainingData = new ArrayList<>();
     }
-    
     public void train(List<double[]> data, List<String> labels) {
         ErrorManager.validateDataAndLabelsSize(data, labels); // Validación de tamaño de datos y etiquetas
         trainingData.clear(); // Limpiar datos de entrenamiento previos
-
         for (int i = 0; i < data.size(); i++) {
             trainingData.add(new DataPoint(data.get(i), labels.get(i)));
         }
-
         ErrorManager.checkDataNotEmpty(trainingData); // Validación de que el dataset no esté vacío
     }
-
     public List<String> predict(List<double[]> samples) {
         if (trainingData.isEmpty()) {
             throw new IllegalStateException("El modelo no ha sido entrenado.");
         }
-
         List<String> predictions = new ArrayList<>();
         for (double[] sample : samples) {
             ErrorManager.validateFeatureDimension(sample, trainingData.get(0).getFeatures());  // Validación de dimensión de la muestra
@@ -50,20 +42,16 @@ public class KNNClassifier {
         }
         return predictions;
     }
-
     public String predict(double[] sample) {
         if (trainingData.isEmpty()) {
             throw new IllegalStateException("El modelo no ha sido entrenado.");
         }
-
         ErrorManager.validateFeatureDimension(sample, trainingData.get(0).getFeatures());  // Validación de dimensión de la muestra
-
         List<DataPointDistance> distances = new ArrayList<>();
         for (DataPoint dataPoint : trainingData) {
             double distance = calculateDistance(sample, dataPoint.getFeatures());
             distances.add(new DataPointDistance(dataPoint, distance));
         }
-
         Collections.sort(distances, Comparator.comparingDouble(DataPointDistance::getDistance));
 
         Map<String, Integer> labelCount = new HashMap<>();
@@ -71,10 +59,8 @@ public class KNNClassifier {
             String label = distances.get(i).getDataPoint().getLabel();
             labelCount.put(label, labelCount.getOrDefault(label, 0) + 1);
         }
-
         return Collections.max(labelCount.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
-
     public void evaluate(List<String> trueLabels, List<String> predictedLabels, List<EvaluationMetric> metrics, String positiveLabel) {
         ErrorManager.validateLabelsAndPredictionsSize(trueLabels, predictedLabels); // Validación de tamaño de listas
 

@@ -6,23 +6,18 @@ import java.util.Map;
 import iteso.libs.metrics.Metrics;
 
 public class NaiveBayesClassifier {
-	
-
     private Map<String, Double> priorProbabilities; // Probabilidades previas de cada clase
     private Map<String, Map<Integer, Map<Double, Double>>> conditionalProbabilities; // P(condición | clase)
     private List<String> classes; // Lista de clases únicas
-
     public NaiveBayesClassifier() {
         priorProbabilities = new HashMap<>();
         conditionalProbabilities = new HashMap<>();
     }
-
     public void train(List<double[]> data, List<String> labels) {
         ErrorManager.validateDataAndLabelsSize(data, labels); // Validación de tamaño de datos y etiquetas
         ErrorManager.checkDataNotEmpty(data); // Validación de que los datos no estén vacíos
 
         classes = labels.stream().distinct().toList(); // Obtener las clases únicas
-
         for (String label : labels) {
             int count = 0;
             for (String l : labels) {
@@ -33,8 +28,6 @@ public class NaiveBayesClassifier {
             double priorProbability = (double) count / labels.size();
             priorProbabilities.put(label, priorProbability); // Guardar la probabilidad previa
         }
-
-
         // Calcular probabilidades condicionales
         for (String label : classes) {
             conditionalProbabilities.put(label, new HashMap<>());
@@ -50,16 +43,11 @@ public class NaiveBayesClassifier {
                         totalFeatureCount++;
                     }
                 }
-
                 // Normalizar las probabilidades condicionales
                 for (Map.Entry<Double, Double> entry : featureValueCounts.entrySet()) {
                     featureValueCounts.put(entry.getKey(), entry.getValue() / totalFeatureCount);
                 }
-                conditionalProbabilities.get(label).put(featureIndex, featureValueCounts);
-            }
-        }
-    }
-
+                conditionalProbabilities.get(label).put(featureIndex, featureValueCounts);}}}
     public String predict(double[] sample) {
     	ErrorManager.checkMapNotEmpty(priorProbabilities); // Validar que el modelo haya sido entrenado
         String bestClass = null;
@@ -67,13 +55,11 @@ public class NaiveBayesClassifier {
 
         for (String label : classes) {
             double probability = Math.log(priorProbabilities.get(label)); // Usar log para evitar underflow
-
             for (int featureIndex = 0; featureIndex < sample.length; featureIndex++) {
                 double featureValue = sample[featureIndex];
                 Map<Double, Double> featureProbabilities = conditionalProbabilities.get(label).get(featureIndex);
                 probability += Math.log(featureProbabilities.getOrDefault(featureValue, 1e-6)); // Laplace smoothing
             }
-
             if (probability > maxProbability) {
                 maxProbability = probability;
                 bestClass = label;
@@ -82,7 +68,6 @@ public class NaiveBayesClassifier {
 
         return bestClass;
     }
-
     public List<String> predict(List<double[]> samples) {
         return samples.stream().map(this::predict).toList();
     }

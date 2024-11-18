@@ -1,9 +1,9 @@
 package iteso.libs.models;
-import iteso.libs.metrics.Metrics;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import iteso.libs.models.EvaluationMetric; // Importa la enumeración común
+
+import iteso.libs.metrics.Metrics;
 
 public class NaiveBayesClassifier {
 	

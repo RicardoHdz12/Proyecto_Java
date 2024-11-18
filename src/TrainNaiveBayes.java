@@ -1,12 +1,12 @@
-import iteso.libs.models.NaiveBayesClassifier;
-import iteso.libs.models.EvaluationMetric;
-import iteso.libs.utils.CSVReader;
-import iteso.libs.utils.TrainTestSplit;
-
 import java.io.IOException;
 import java.util.List;
 
-public class TrainNaiveBayesWithIris {
+import iteso.libs.models.EvaluationMetric;
+import iteso.libs.models.NaiveBayesClassifier;
+import iteso.libs.utils.CSVReader;
+import iteso.libs.utils.TrainTestSplit;
+
+public class TrainNaiveBayes {
     public static void main(String[] args) {
         try {
             // Ruta al archivo CSV

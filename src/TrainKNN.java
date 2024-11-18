@@ -1,11 +1,12 @@
-import iteso.libs.models.*;
-import iteso.libs.utils.CSVReader;
-import iteso.libs.utils.TrainTestSplit;
-
 import java.io.IOException;
 import java.util.List;
 
-public class TrainKNNWithIris {
+import iteso.libs.models.EvaluationMetric;
+import iteso.libs.models.KNNClassifier;
+import iteso.libs.utils.CSVReader;
+import iteso.libs.utils.TrainTestSplit;
+
+public class TrainKNN {
     public static void main(String[] args) {
         try {
             // Ruta al archivo CSV

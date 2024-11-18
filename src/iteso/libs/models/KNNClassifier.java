@@ -1,12 +1,12 @@
 package iteso.libs.models;
-import iteso.libs.models.EvaluationMetric;
-import iteso.libs.metrics.Metrics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import iteso.libs.metrics.Metrics;
 
 public class KNNClassifier {
     public enum DistanceType {
